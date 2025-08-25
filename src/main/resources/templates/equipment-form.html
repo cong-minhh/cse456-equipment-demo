@@ -12,20 +12,23 @@
             background-color: #F9F9F9;
             color: #333333;
         }
-        
+
         .form-container h1 {
             font-size: 24px;
             color: #333333;
         }
-        
+
         .form-group label {
             color: #333333;
         }
-        
+
         .form-group input,
         .form-group select {
             color: #333333;
         }
+
+        .text-grey { color: lightgrey; }
+        .text-dark { color: #333333; }
     </style>
 </head>
 <body>
@@ -37,8 +40,10 @@
                 <label for="equipmentId">Equipment ID</label>
                 <input type="text" id="equipmentId" th:field="*{equipmentId}"
                        th:readonly="${formMode=='edit'}"
-                       th:style="${formMode=='edit'?'color : lightgrey' : 'color : #333333'}"
+                       th:classappend="${formMode=='edit'} ? 'text-grey' : 'text-dark'"
                        maxlength="10" placeholder="10 characters">
+
+
                 <span th:errors="*{equipmentId}" style="color: red"></span>
                 <span th:if="${duplicateId != null}" th:text="${duplicateId}" style="color: red">*</span>
             </div>
@@ -66,10 +71,9 @@
                     <option value="">Select Equipment Type</option>
                     <option th:each="et : ${equipmentTypeList}"
                             th:value="${et.equipmentTypeId}"
-                            th:text="${et.typeName}">
-                    </option>
+                            th:text="${et.typeName}"></option>
                 </select>
-                <span th:errors="*{equipmentType}" style="color: red"></span>
+                <span th:errors="*{equipmentType.equipmentTypeId}" style="color: red"></span>
             </div>
             <div class="form-group">
                 <button type="submit">Save</button>

@@ -53,8 +53,8 @@ public class EquipmentController {
 
         // Check role authorization - Admin (1) and Staff (2) can view equipment list
         if (user.getRole() != 1 && user.getRole() != 2) {
-            model.addAttribute("errorMessage", "You are not authorized to access this function!");
-            return "login";
+            model.addAttribute("errRole", "You are not authorized to access this function! So nothing will show here!");
+            return "equipment-list";
         }
 
         List<Equipment> equipmentList = new ArrayList<>();
@@ -172,6 +172,14 @@ public class EquipmentController {
         }
 
         // Nếu data ok hết thì lưu equipment và chuyển qua trang equipments
+        if (formMode.equals("edit")) {
+            // When editing, preserve the original purchaseDate
+            Equipment existingEquipment = equipmentServ.getEquipmentById(e.getEquipmentId());
+            e.setPurchaseDate(existingEquipment.getPurchaseDate());
+        } else {
+            // For new equipment, set purchaseDate to null (let @CreatedDate handle it)
+            e.setPurchaseDate(null);
+        }
         equipmentServ.saveEquipment(e);
         // Validate coi thông tin có hợp lệ không
         // Lưu xuống database
